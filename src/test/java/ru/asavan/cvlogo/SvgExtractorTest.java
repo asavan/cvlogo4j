@@ -59,11 +59,9 @@ class SvgExtractorTest {
         readCalendarFromFile(s, "calendar2019.txt");
     }
 
-    private void readCalendarFromFile(Predicate<String> pred, final String name) {
-        ClassLoader classLoader = getClass().getClassLoader();
-
-        File file = new File(classLoader.getResource(name).getFile());
-        BufferedReader reader = null;
+    private static void readCalendarFromFile(Predicate<String> pred, final String name) {
+        File file = new File(SvgExtractorTest.class.getResource("/" + name).getFile());
+        BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(file));
             String inputLine;

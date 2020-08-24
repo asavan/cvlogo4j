@@ -22,13 +22,13 @@ public class Runner {
 
     public static void main(String[] args) throws IOException {
         fill(false);
-        // asavan4();
+        // asavan3();
     }
 
     private static void asavan3() throws IOException {
         Calendar cal = getCalendar();
         // cal.setFillColor(Color.ONE);
-        cal.setMinColor(Color.FOUR, 25);
+        cal.setMinColor(Color.FOUR, 30);
         if (DEBUG_PRINTING) {
             System.out.println(cal.minCountPrintable());
         }
@@ -38,7 +38,7 @@ public class Runner {
         if (DEBUG_PRINTING) {
             System.out.println(Pictures.printImage(image));
         }
-        String repo = "cvlogo1";
+        String repo = "cvlogo";
         OsName osName = chooseOs();
         String output = Commiter.fake_it(image, cal, USERNAME, repo, offset, osName);
         writeOnDisk(repo, output, osName);
