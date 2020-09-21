@@ -27,13 +27,13 @@ public class Runner {
 
     private static void asavan3() throws IOException {
         Calendar cal = getCalendar();
-        // cal.setFillColor(Color.ONE);
-        cal.setMinColor(Color.FOUR, 30);
+        cal.setFillColor(Color.ONE);
+        cal.setMinColor(Color.FOUR, 32);
         if (DEBUG_PRINTING) {
             System.out.println(cal.minCountPrintable());
         }
 
-        int offset = 11;
+        int offset = 9;
         Integer[][] image = Pictures.strToSprite(Pictures.ASAVAN3);
         if (DEBUG_PRINTING) {
             System.out.println(Pictures.printImage(image));
@@ -91,7 +91,7 @@ public class Runner {
         if (DEBUG_PRINTING) {
             System.out.println(cal.minCountPrintable());
         }
-        String repo = "cvlogofill";
+        String repo = "cvlogo";
         OsName osName = chooseOs();
         String output = isNew ? Commiter.fake_it(null, cal, USERNAME, repo, 0, osName) : Commiter.fill(cal, repo);
         if (!output.isEmpty()) {
