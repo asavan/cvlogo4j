@@ -37,7 +37,7 @@ public class Pictures {
              **   **  ****  **   **  ***  **   **  *   **
             """;
     private static final Map<Character, Integer> ASCII_TO_NUMBER = Map.of(
-            ' ', 0,
+            ' ', 1,
             '-', 0,
             '_', 1,
             '~', 2,

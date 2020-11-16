@@ -16,6 +16,9 @@ public class Commiter {
     public static String fake_it(Integer[][] image, Calendar cal, String username, String repo, int offset, OsName osName) {
         Templater templater = chooseTemplater(osName);
         List<String> strings = generateValuesInDateOrder(image, cal, offset, templater);
+        if (strings.isEmpty()) {
+            return "";
+        }
         return MessageFormat.format(templater.getMainTemplate(), repo, String.join("\n", strings), GIT_URL, username);
     }
 
@@ -82,7 +85,7 @@ public class Commiter {
         if (count < 0) {
             Integer maxCount = cal.getMaxCount(neededColor);
             if (shouldWarn && (maxCount == null || maxCount < d.getCount())) {
-                System.out.println("Bad pixel at day " + d.getDate() + " " + d.getCount() + " " + minCount + " " + maxCount);
+                System.out.println("Bad pixel at day " + d.getDate() + " " + d.getCount() + " " + minCount + " " + maxCount + " " + neededColor);
             }
             return;
         }
