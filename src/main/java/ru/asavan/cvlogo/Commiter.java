@@ -16,22 +16,13 @@ public class Commiter {
     private static final int DAYS_IN_WEEK = 7;
     private static final boolean DEBUG_PRINTING = false;
 
-    public static String fake_it(Integer[][] image, Calendar cal, String username, String repo, int offset, OsName osName) {
+    public static String fake_it(Integer[][] image, Calendar cal, String username, String repo, int offset, OsName osName, boolean isNew) {
         Templater templater = chooseTemplater(osName);
         List<String> strings = generateValuesInDateOrder(image, cal, offset, templater);
         if (strings.isEmpty()) {
             return "";
         }
-        return MessageFormat.format(templater.getMainTemplate(), repo, String.join("\n", strings), GIT_URL, username);
-    }
-
-    public static String fill(Integer[][] image, Calendar cal, String repo, int offset) {
-        Templater templater = new WinFillTemplater();
-        List<String> strings = generateValuesInDateOrder(image, cal, offset, templater);
-        if (strings.isEmpty()) {
-            return "";
-        }
-        return MessageFormat.format(templater.getMainTemplate(), repo, String.join("\n", strings));
+        return MessageFormat.format(templater.getMainTemplate(isNew), repo, String.join("\n", strings), GIT_URL, username);
     }
 
     private static Templater chooseTemplater(OsName osName) {
@@ -84,10 +75,6 @@ public class Commiter {
 
     private static void solveOneDay(List<String> strings, Calendar cal, int minCount, int i, Color neededColor, boolean shouldWarn, Templater templater) {
         Day d = cal.getDay(i);
-        // TODO github double count commit after this date. Remove after bug fixed
-        if (d.getDate().isAfter(LocalDate.of(2020, Month.MAY, 12))) {
-            return;
-        }
         int count = minCount - d.getCount();
         if (count < 0) {
             Integer maxCount = cal.getMaxCount(neededColor);
@@ -96,6 +83,14 @@ public class Commiter {
             }
             return;
         }
+        // TODO github double count commit after this date. Remove after bug fixed
+        if (d.getDate().isAfter(LocalDate.of(2020, Month.MAY, 12))) {
+            if (count > 1) {
+                // count /= 2;
+            }
+            // return;
+        }
+
         for (int j = 0; j < count; ++j) {
             String c = commit(d.getTime(j + d.getCount()), templater, j + 1);
             strings.add(c);

@@ -27,7 +27,7 @@ public class Runner {
     private static void draw(boolean isNew, Integer[][] image) throws IOException {
         Calendar cal = getCalendar();
         cal.setFillColor(Color.ONE);
-        cal.setMinColor(Color.FOUR, 32);
+        cal.setMinColor(Color.FOUR, 26);
         if (DEBUG_PRINTING) {
             System.out.println(cal.minCountPrintable());
         }
@@ -38,7 +38,7 @@ public class Runner {
         }
         String repo = "cvlogo";
         OsName osName = chooseOs();
-        String output = isNew ? Commiter.fake_it(image, cal, USERNAME, repo, offset, osName) : Commiter.fill(image, cal, repo, offset);
+        String output = Commiter.fake_it(image, cal, USERNAME, repo, offset, osName, isNew);
         if (!output.isEmpty()) {
             writeOnDisk(repo, output, osName);
         } else {
@@ -84,7 +84,7 @@ public class Runner {
         image[0][0] = 4;
         String repo = "dotcvlogo6";
         OsName osName = chooseOs();
-        String output = Commiter.fake_it(image, cal, USERNAME, repo, offset, osName);
+        String output = Commiter.fake_it(image, cal, USERNAME, repo, offset, osName, true);
         writeOnDisk(repo, output, osName);
     }
 

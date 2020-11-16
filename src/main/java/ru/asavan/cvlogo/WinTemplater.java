@@ -17,12 +17,24 @@ public class WinTemplater implements Templater {
             cd ..
             """;
 
+    public static final String MAIN_FILL_TEMPLATE = """
+            cd {0}
+            git add README.md
+            echo off            
+            {1}
+            echo on
+            git pull
+            git push
+            cd ..
+            """;
+
+
     public static final String COMMIT_TEMPLATE = """
             set GIT_AUTHOR_DATE="{0}" && set GIT_COMMITTER_DATE="{0}" && git commit --allow-empty -m "emulate {1}" > nul""";
 
     @Override
-    public String getMainTemplate() {
-        return MAIN_TEMPLATE;
+    public String getMainTemplate(boolean isNew) {
+        return isNew ? MAIN_TEMPLATE : MAIN_FILL_TEMPLATE;
     }
 
     @Override
