@@ -1,7 +1,9 @@
 package ru.asavan.cvlogo;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +25,9 @@ public class Commiter {
         return MessageFormat.format(templater.getMainTemplate(), repo, String.join("\n", strings), GIT_URL, username);
     }
 
-    public static String fill(Calendar cal, String repo) {
+    public static String fill(Integer[][] image, Calendar cal, String repo, int offset) {
         Templater templater = new WinFillTemplater();
-        List<String> strings = generateValuesInDateOrder(null, cal, 0, templater);
+        List<String> strings = generateValuesInDateOrder(image, cal, offset, templater);
         if (strings.isEmpty()) {
             return "";
         }
@@ -82,6 +84,10 @@ public class Commiter {
 
     private static void solveOneDay(List<String> strings, Calendar cal, int minCount, int i, Color neededColor, boolean shouldWarn, Templater templater) {
         Day d = cal.getDay(i);
+        // TODO github double count commit after this date. Remove after bug fixed
+        if (d.getDate().isAfter(LocalDate.of(2020, Month.MAY, 12))) {
+            return;
+        }
         int count = minCount - d.getCount();
         if (count < 0) {
             Integer maxCount = cal.getMaxCount(neededColor);
@@ -91,7 +97,7 @@ public class Commiter {
             return;
         }
         for (int j = 0; j < count; ++j) {
-            String c = commit(d.getTime(), templater, j + 1);
+            String c = commit(d.getTime(j + d.getCount()), templater, j + 1);
             strings.add(c);
         }
     }

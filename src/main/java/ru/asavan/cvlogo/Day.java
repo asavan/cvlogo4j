@@ -34,8 +34,10 @@ class Day {
         return date;
     }
 
-    public LocalDateTime getTime() {
-        return date.atTime(12, 0);
+    public LocalDateTime getTime(int count) {
+        int hours = (count / 6) + 12;
+        int minutes = (count % 6) * 10;
+        return date.atTime(hours, minutes);
     }
 
     @Override

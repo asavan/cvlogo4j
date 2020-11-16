@@ -21,27 +21,24 @@ public class Runner {
     private static final boolean DEBUG_PRINTING = true;
 
     public static void main(String[] args) throws IOException {
-        // fill(false);
-        asavan3();
+        draw(false, Pictures.strToSprite(Pictures.ASAVAN3));
     }
 
-    private static void asavan3() throws IOException {
+    private static void draw(boolean isNew, Integer[][] image) throws IOException {
         Calendar cal = getCalendar();
         cal.setFillColor(Color.ONE);
-        cal.setMinColor(Color.NONE, 1);
         cal.setMinColor(Color.FOUR, 32);
         if (DEBUG_PRINTING) {
             System.out.println(cal.minCountPrintable());
         }
 
         int offset = 9;
-        Integer[][] image = Pictures.strToSprite(Pictures.ASAVAN3);
-        if (DEBUG_PRINTING) {
+        if (DEBUG_PRINTING && image != null) {
             System.out.println(Pictures.printImage(image));
         }
         String repo = "cvlogo";
         OsName osName = chooseOs();
-        String output = Commiter.fake_it(image, cal, USERNAME, repo, offset, osName);
+        String output = isNew ? Commiter.fake_it(image, cal, USERNAME, repo, offset, osName) : Commiter.fill(image, cal, repo, offset);
         if (!output.isEmpty()) {
             writeOnDisk(repo, output, osName);
         } else {
@@ -60,6 +57,7 @@ public class Runner {
         CalendarExtractor calendarExtractor = getCalendarExtractor(Runner::retrieveContributionsCalendar);
         calendarExtractor.adjustDay("2019-08-31");
         calendarExtractor.adjustDay("2020-04-12");
+        calendarExtractor.adjustDay("2020-06-06");
         return calendarExtractor.getCalendar();
     }
 
@@ -88,25 +86,6 @@ public class Runner {
         OsName osName = chooseOs();
         String output = Commiter.fake_it(image, cal, USERNAME, repo, offset, osName);
         writeOnDisk(repo, output, osName);
-    }
-
-    private static void fill(boolean isNew) throws IOException {
-        Calendar cal = getCalendar();
-        cal.setFillColor(Color.ONE);
-        if (DEBUG_PRINTING) {
-            System.out.println(cal.minCountPrintable());
-        }
-        String repo = "cvlogo";
-        OsName osName = chooseOs();
-        String output = isNew ? Commiter.fake_it(null, cal, USERNAME, repo, 0, osName) : Commiter.fill(cal, repo);
-        if (!output.isEmpty()) {
-            String scriptName = getFileName(repo, osName);
-            save(output, scriptName);
-            System.out.println(scriptName + " saved.");
-            System.out.println("Just run the script");
-        } else {
-            System.out.println("No changes");
-        }
     }
 
     private static void retrieveContributionsCalendar(Predicate<String> pred) {
