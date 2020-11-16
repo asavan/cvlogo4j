@@ -18,8 +18,7 @@ public class WinTemplater implements Templater {
             """;
 
     public static final String COMMIT_TEMPLATE = """
-            set GIT_AUTHOR_DATE="{0}" && set GIT_COMMITTER_DATE="{0}" && git commit --allow-empty -m "emulate" > nul
-            """;
+            set GIT_AUTHOR_DATE="{0}" && set GIT_COMMITTER_DATE="{0}" && git commit --allow-empty -m "emulate {1}" > nul""";
 
     @Override
     public String getMainTemplate() {

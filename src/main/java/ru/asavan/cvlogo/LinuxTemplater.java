@@ -16,8 +16,7 @@ public class LinuxTemplater implements Templater {
             """;
 
     public static final String COMMIT_TEMPLATE = """
-            GIT_AUTHOR_DATE={0} GIT_COMMITTER_DATE={0} git commit --allow-empty -m "emulate" > /dev/null
-            """;
+            GIT_AUTHOR_DATE={0} GIT_COMMITTER_DATE={0} git commit --allow-empty -m "emulate {1}" > /dev/null""";
 
     @Override
     public String getMainTemplate() {

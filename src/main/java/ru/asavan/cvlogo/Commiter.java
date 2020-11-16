@@ -1,4 +1,5 @@
 package ru.asavan.cvlogo;
+
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -90,7 +91,7 @@ public class Commiter {
             return;
         }
         for (int j = 0; j < count; ++j) {
-            String c = commit(d.getTime(), templater);
+            String c = commit(d.getTime(), templater, j + 1);
             strings.add(c);
         }
     }
@@ -110,7 +111,7 @@ public class Commiter {
         fillOneColor(days, cal.size() - 1, strings, cal, neededColor, templater);
     }
 
-    private static String commit(LocalDateTime date, Templater templater) {
-        return MessageFormat.format(templater.getCommitTemplate(), date.format(DateTimeFormatter.ISO_DATE_TIME));
+    private static String commit(LocalDateTime date, Templater templater, int count) {
+        return MessageFormat.format(templater.getCommitTemplate(), date.format(DateTimeFormatter.ISO_DATE_TIME), count);
     }
 }
