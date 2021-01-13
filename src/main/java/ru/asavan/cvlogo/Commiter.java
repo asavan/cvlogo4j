@@ -92,7 +92,7 @@ public class Commiter {
         }
 
         for (int j = 0; j < count; ++j) {
-            String c = commit(d.getTime(j + d.getCount()), templater, j + 1);
+            String c = commit(d.getTime(j + d.getCount()), templater, j + 1 + d.getCount());
             strings.add(c);
         }
     }
