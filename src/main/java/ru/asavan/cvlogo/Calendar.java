@@ -96,12 +96,21 @@ class Calendar {
     }
 
     public String minCountPrintable() {
-        return minCount.toString();
+        return minCount.toString() + "\n" + maxCount.toString();
     }
 
     Day getDayByDate(LocalDate date) {
         for (Day day : cal) {
             if (day.getDate().equals(date)) {
+                return day;
+            }
+        }
+        return null;
+    }
+
+    Day getDayByValue(int count) {
+        for (Day day : cal) {
+            if (day.getCount() == count) {
                 return day;
             }
         }

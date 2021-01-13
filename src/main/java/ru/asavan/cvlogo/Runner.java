@@ -27,9 +27,10 @@ public class Runner {
     private static void draw(boolean isNew, Integer[][] image) throws IOException {
         Calendar cal = getCalendar();
         cal.setFillColor(Color.ONE);
-        cal.setMinColor(Color.FOUR, 26);
+        // cal.setMinColor(Color.FOUR, 26);
         if (DEBUG_PRINTING) {
             System.out.println(cal.minCountPrintable());
+            System.out.println(cal.getDayByValue(52));
         }
 
         int offset = 9;
