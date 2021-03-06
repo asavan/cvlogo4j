@@ -8,7 +8,6 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -66,10 +65,8 @@ public class Runner {
         MemoryCollector memoryCollector = new MemoryCollector();
         SvgExtractor svgExtractor = new SvgExtractor(memoryCollector);
         ColorExtractor colorExtractor = new ColorExtractor();
-        LegendExtractor legendExtractor = new LegendExtractor(colorExtractor);
-        ListPredicate predicate = new ListPredicate(Arrays.asList(svgExtractor, legendExtractor));
-        consumer.accept(predicate);
-        CalendarExtractor calendarExtractor = new CalendarExtractor(colorExtractor.getColorMap());
+        consumer.accept(svgExtractor);
+        CalendarExtractor calendarExtractor = new CalendarExtractor(colorExtractor);
         calendarExtractor.extract(memoryCollector.getArr());
         return calendarExtractor;
     }

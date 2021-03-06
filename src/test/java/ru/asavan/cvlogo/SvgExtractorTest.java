@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 
 /**
@@ -26,26 +25,8 @@ class SvgExtractorTest {
     }
 
     @Test
-    void testCalendar() {
-        Map<String, Color> COLOR_MAP = Map.of(
-                "#ebedf0", Color.NONE,
-                "#c6e48b", Color.ONE,
-                "#7bc96f", Color.TWO,
-                "#239a3b", Color.TREE,
-                "#196127", Color.FOUR
-        );
-        CalendarExtractor m = new CalendarExtractor(COLOR_MAP);
-        SvgExtractor s = new SvgExtractor(m);
-        simulateCalendar(s);
-        Calendar calendar = m.getCalendar();
-        System.out.println(calendar);
-        System.out.println(calendar.minCountPrintable());
-    }
-
-    @Test
-    void testColorParse() {
-        parseYear("calendar2020.txt");
-        parseYear("calendar2019.txt");
+    void testColorParse2021() {
+        parseYear("calendar2021.txt");
     }
 
     private void parseYear(String name) {
@@ -56,7 +37,7 @@ class SvgExtractorTest {
     }
 
     private void simulateCalendar(Predicate<String> s) {
-        readCalendarFromFile(s, "calendar2019.txt");
+        readCalendarFromFile(s, "calendar2021.txt");
     }
 
     private static void readCalendarFromFile(Predicate<String> pred, final String name) {

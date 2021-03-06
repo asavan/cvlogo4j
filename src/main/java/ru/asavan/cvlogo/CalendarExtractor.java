@@ -8,11 +8,11 @@ import java.util.function.Consumer;
  * Created by asavan on 23.05.2020.
  */
 public class CalendarExtractor implements Consumer<String> {
-    private final Map<String, Color> color_map;
+    private final ColorExtractor colorExtractor;
     private final Calendar cal = new Calendar();
 
-    public CalendarExtractor(Map<String, Color> color_map) {
-        this.color_map = color_map;
+    public CalendarExtractor(ColorExtractor colorExtractor) {
+        this.colorExtractor = colorExtractor;
     }
 
     public void extract(List<String> lines) {
@@ -23,7 +23,7 @@ public class CalendarExtractor implements Consumer<String> {
 
     @Override
     public void accept(String inputLine) {
-        Day d = Parser.parseOneLine(inputLine, color_map);
+        Day d = Parser.parseOneLine(inputLine, colorExtractor);
         if (d != null) {
             cal.add(d);
         }
