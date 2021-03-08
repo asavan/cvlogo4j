@@ -2,7 +2,7 @@ package ru.asavan.cvlogo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +11,8 @@ import java.util.Map;
  */
 class Calendar {
     private final List<Day> cal;
-    private final Map<Color, Integer> minCount = new HashMap<>();
-    private final Map<Color, Integer> maxCount = new HashMap<>();
+    private final Map<Color, Integer> minCount = new EnumMap<>(Color.class);
+    private final Map<Color, Integer> maxCount = new EnumMap<>(Color.class);
     private int maxCommits = 0;
     private Color fillColor = null;
     private Integer[][] rep;

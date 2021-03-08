@@ -29,7 +29,6 @@ public class Runner {
         // cal.setMinColor(Color.FOUR, 26);
         if (DEBUG_PRINTING) {
             System.out.println(cal.minCountPrintable());
-            System.out.println(cal.getDayByValue(52));
         }
 
         int offset = 9;
@@ -54,11 +53,14 @@ public class Runner {
     }
 
     private static Calendar getCalendar() {
-        CalendarExtractor calendarExtractor = getCalendarExtractor(Runner::retrieveContributionsCalendar);
-        calendarExtractor.adjustDay("2019-08-31");
+        return getCalendarExtractorWithAdjustment(Runner::retrieveContributionsCalendar).getCalendar();
+    }
+
+    static CalendarExtractor getCalendarExtractorWithAdjustment(Consumer<Predicate<String>> consumer) {
+        CalendarExtractor calendarExtractor = getCalendarExtractor(consumer);
         calendarExtractor.adjustDay("2020-04-12");
-        calendarExtractor.adjustDay("2020-06-06");
-        return calendarExtractor.getCalendar();
+        calendarExtractor.adjustDay("2020-08-16");
+        return calendarExtractor;
     }
 
     static CalendarExtractor getCalendarExtractor(Consumer<Predicate<String>> consumer) {

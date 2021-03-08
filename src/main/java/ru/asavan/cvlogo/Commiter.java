@@ -84,9 +84,9 @@ public class Commiter {
             return;
         }
         // TODO github double count commit after this date. Remove after bug fixed
-        if (d.getDate().isAfter(LocalDate.of(2020, Month.MAY, 12))) {
+        if (d.getDate().isAfter(LocalDate.of(2020, Month.JULY, 4))) {
             if (count > 1) {
-                // count /= 2;
+                count = (count + 1) / 2;
             }
             // return;
         }

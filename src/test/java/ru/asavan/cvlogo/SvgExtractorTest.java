@@ -10,6 +10,8 @@ import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
  * Created by asavan on 24.05.2020.
  */
@@ -29,6 +31,21 @@ class SvgExtractorTest {
         parseYear("calendar2021.txt");
     }
 
+    @Test
+    void compareIncognitoAndNormal() {
+        Calendar calendarNormal = Runner.getCalendarExtractor(pred -> readCalendarFromFile(pred, "calendar2021_normal.txt")).getCalendar();
+        Calendar calendarIncognito = Runner.getCalendarExtractor(pred -> readCalendarFromFile(pred, "calendar2021_incognito.txt")).getCalendar();
+        System.out.println(calendarNormal.minCountPrintable());
+        System.out.println(calendarIncognito.minCountPrintable());
+        assertEquals(calendarNormal.size(), calendarIncognito.size());
+        for (int i = 0; i < calendarNormal.size(); i++) {
+            if (calendarNormal.getDay(i).getColor() != calendarIncognito.getDay(i).getColor()) {
+                System.out.println(calendarNormal.getDay(i));
+                System.out.println(calendarIncognito.getDay(i));
+            }
+        }
+    }
+
     private void parseYear(String name) {
         CalendarExtractor calendarExtractor = Runner.getCalendarExtractor(pred -> readCalendarFromFile(pred, name));
         Calendar calendar = calendarExtractor.getCalendar();
@@ -42,16 +59,13 @@ class SvgExtractorTest {
 
     private static void readCalendarFromFile(Predicate<String> pred, final String name) {
         File file = new File(SvgExtractorTest.class.getResource("/" + name).getFile());
-        BufferedReader reader;
-        try {
-            reader = new BufferedReader(new FileReader(file));
+        try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String inputLine;
             while ((inputLine = reader.readLine()) != null) {
                 if (pred.test(inputLine)) {
                     break;
                 }
             }
-            reader.close();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
