@@ -3,7 +3,6 @@ package ru.asavan.cvlogo;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +15,9 @@ public class Commiter {
     private static final int DAYS_IN_WEEK = 7;
     private static final boolean DEBUG_PRINTING = false;
 
-    public static String fake_it(Integer[][] image, Calendar cal, String username, String repo, int offset, OsName osName, boolean isNew) {
+    public static String fake_it(Integer[][] image, Calendar cal, String username, String repo, int offset, OsName osName, boolean isNew, LocalDate githubErrorSince) {
         Templater templater = chooseTemplater(osName);
-        List<String> strings = generateValuesInDateOrder(image, cal, offset, templater);
+        List<String> strings = generateValuesInDateOrder(image, cal, offset, templater, githubErrorSince);
         if (strings.isEmpty()) {
             return "";
         }
@@ -32,27 +31,27 @@ public class Commiter {
         return new LinuxTemplater();
     }
 
-    private static List<String> generateValuesInDateOrder(Integer[][] image, Calendar cal, int offset, Templater templater) {
+    private static List<String> generateValuesInDateOrder(Integer[][] image, Calendar cal, int offset, Templater templater, LocalDate githubErrorSince) {
         List<String> strings = new ArrayList<>();
         int days = offset * DAYS_IN_WEEK;
         if (cal.getFillColor() != null) {
-            prefill(days, strings, cal, cal.getFillColor(), templater);
+            strings.addAll(prefill(days, cal, cal.getFillColor(), templater));
         }
         if (DEBUG_PRINTING) {
             System.out.println("Calendar first day " + cal.getDay(0).getDate());
             System.out.println("Image first day " + cal.getDay(days).getDate());
         }
         if (image != null) {
-            days = fillImage(image, cal, templater, strings, days);
+            days = fillImage(image, cal, templater, strings, days, githubErrorSince);
         }
 
         if (cal.getFillColor() != null) {
-            postfill(days, strings, cal, cal.getFillColor(), templater);
+            strings.addAll(postfill(days, cal, cal.getFillColor(), templater));
         }
         return strings;
     }
 
-    private static int fillImage(Integer[][] image, Calendar cal, Templater templater, List<String> strings, int days) {
+    private static int fillImage(Integer[][] image, Calendar cal, Templater templater, List<String> strings, int days, LocalDate githubErrorSince) {
         int width = image[0].length;
         if (image.length > Commiter.DAYS_IN_WEEK) {
             System.out.println("Bad image sizing");
@@ -66,25 +65,25 @@ public class Commiter {
                 }
                 Color neededColor = Pictures.getColor(image[h][w]);
                 int minCount = cal.getMinCount(neededColor);
-                solveOneDay(strings, cal, minCount, days, neededColor, true, templater);
+                Integer maxCount = cal.getMaxCount(neededColor);
+                strings.addAll(solveOneDay(minCount, maxCount, neededColor, d, templater, true, githubErrorSince));
                 ++days;
             }
         }
         return days;
     }
 
-    private static void solveOneDay(List<String> strings, Calendar cal, int minCount, int i, Color neededColor, boolean shouldWarn, Templater templater) {
-        Day d = cal.getDay(i);
+    private static List<String> solveOneDay(int minCount, Integer maxCount, Color neededColor, Day d, Templater templater, boolean shouldWarn, LocalDate githubErrorSince) {
+        List<String> strings = new ArrayList<>();
         int count = minCount - d.getCount();
         if (count < 0) {
-            Integer maxCount = cal.getMaxCount(neededColor);
             if (shouldWarn && (maxCount == null || maxCount < d.getCount())) {
                 System.out.println("Bad pixel at day " + d.getDate() + " " + d.getCount() + " " + minCount + " " + maxCount + " " + neededColor);
             }
-            return;
+            return strings;
         }
         // TODO github double count commit after this date. Remove after bug fixed
-        if (d.getDate().isAfter(LocalDate.of(2020, Month.JULY, 4))) {
+        if (githubErrorSince != null && d.getDate().isAfter(githubErrorSince)) {
             if (count > 1) {
                 count = (count + 1) / 2;
             }
@@ -95,21 +94,25 @@ public class Commiter {
             String c = commit(d.getTime(j + d.getCount()), templater, j + 1 + d.getCount());
             strings.add(c);
         }
+        return strings;
     }
 
-    private static void fillOneColor(int begin, int end, List<String> strings, Calendar cal, Color neededColor, Templater templater) {
+    private static List<String> fillOneColor(int begin, int end, Calendar cal, Color neededColor, Templater templater) {
+        List<String> strings = new ArrayList<>();
         int minCount = cal.getMinCount(neededColor);
+        Integer maxCount = cal.getMaxCount(neededColor);
         for (int i = begin; i < end; ++i) {
-            solveOneDay(strings, cal, minCount, i, neededColor, false, templater);
+            strings.addAll(solveOneDay(minCount, maxCount, neededColor, cal.getDay(i), templater, false, null));
         }
+        return strings;
     }
 
-    private static void prefill(int days, List<String> strings, Calendar cal, Color neededColor, Templater templater) {
-        fillOneColor(0, days, strings, cal, neededColor, templater);
+    private static List<String> prefill(int days, Calendar cal, Color neededColor, Templater templater) {
+        return fillOneColor(0, days, cal, neededColor, templater);
     }
 
-    private static void postfill(int days, List<String> strings, Calendar cal, Color neededColor, Templater templater) {
-        fillOneColor(days, cal.size() - 1, strings, cal, neededColor, templater);
+    private static List<String> postfill(int days, Calendar cal, Color neededColor, Templater templater) {
+        return fillOneColor(days, cal.size() - 1, cal, neededColor, templater);
     }
 
     private static String commit(LocalDateTime date, Templater templater, int count) {

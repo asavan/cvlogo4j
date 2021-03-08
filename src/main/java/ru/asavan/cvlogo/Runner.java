@@ -8,6 +8,8 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -18,6 +20,7 @@ public class Runner {
     public static final String USERNAME = "asavan";
     public static final String GITHUB_BASE_URL = "https://github.com/";
     private static final boolean DEBUG_PRINTING = true;
+    private static final LocalDate GITHUB_ERROR_SINCE = LocalDate.of(2020, Month.JULY, 4);
 
     public static void main(String[] args) throws IOException {
         draw(false, Pictures.strToSprite(Pictures.ASAVAN3));
@@ -37,7 +40,7 @@ public class Runner {
         }
         String repo = "cvlogo";
         OsName osName = chooseOs();
-        String output = Commiter.fake_it(image, cal, USERNAME, repo, offset, osName, isNew);
+        String output = Commiter.fake_it(image, cal, USERNAME, repo, offset, osName, isNew, GITHUB_ERROR_SINCE);
         if (!output.isEmpty()) {
             writeOnDisk(repo, output, osName);
         } else {
@@ -84,7 +87,7 @@ public class Runner {
         image[0][0] = 4;
         String repo = "dotcvlogo6";
         OsName osName = chooseOs();
-        String output = Commiter.fake_it(image, cal, USERNAME, repo, offset, osName, true);
+        String output = Commiter.fake_it(image, cal, USERNAME, repo, offset, osName, true, GITHUB_ERROR_SINCE);
         writeOnDisk(repo, output, osName);
     }
 
