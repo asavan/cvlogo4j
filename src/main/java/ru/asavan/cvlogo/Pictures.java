@@ -64,6 +64,16 @@ public class Pictures {
         return Color.values()[index];
     }
 
+    public static Color nextColor(Color color) {
+        return switch (color) {
+            case NONE -> Color.ONE;
+            case ONE -> Color.TWO;
+            case TWO -> Color.TREE;
+            case TREE -> Color.FOUR;
+            case FOUR -> Color.FOUR;
+        };
+    }
+
     public static String printImage(Integer[][] image) {
         return Arrays
                 .stream(image)

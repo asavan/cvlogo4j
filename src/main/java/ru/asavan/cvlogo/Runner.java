@@ -23,7 +23,7 @@ public class Runner {
     private static final LocalDate GITHUB_ERROR_SINCE = Parser.getLocalDate("2020-07-04"); // or null to switch off
 
     public static void main(String[] args) throws IOException {
-        asavanPic(false);
+        asavanPic(true);
     }
 
     public static void asavanPic(boolean isNew) throws IOException {

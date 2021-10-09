@@ -19,9 +19,7 @@ public class LinuxTemplater implements Templater {
             #!/usr/bin/env bash
             cd {0}
             git add README.md
-            echo off            
             {1}
-            echo on
             git pull
             git push
             cd ..

@@ -8,7 +8,7 @@ public class WinTemplater implements Templater {
             cd {0}
             echo # {0} >> README.md
             git add README.md
-            echo off            
+            echo off
             {1}
             echo on
             git remote add origin {2}:{3}/{0}.git
@@ -20,7 +20,7 @@ public class WinTemplater implements Templater {
     public static final String MAIN_FILL_TEMPLATE = """
             cd {0}
             git add README.md
-            echo off            
+            echo off
             {1}
             echo on
             git pull

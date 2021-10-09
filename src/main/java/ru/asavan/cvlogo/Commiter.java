@@ -64,21 +64,26 @@ public class Commiter {
                     continue;
                 }
                 Color neededColor = Pictures.getColor(image[h][w]);
-                int minCount = cal.getMinCount(neededColor);
-                Integer maxCount = cal.getMaxCount(neededColor);
-                strings.addAll(solveOneDay(minCount, maxCount, neededColor, d, templater, true, githubErrorSince));
+                strings.addAll(solveOneDay(cal, neededColor, d, templater, true, githubErrorSince));
                 ++days;
             }
         }
         return days;
     }
 
-    private static List<String> solveOneDay(int minCount, Integer maxCount, Color neededColor, Day d, Templater templater, boolean shouldWarn, LocalDate githubErrorSince) {
+    private static List<String> solveOneDay(Calendar cal, Color neededColor, Day d, Templater templater, boolean shouldWarn, LocalDate githubErrorSince) {
+        int minCount = cal.getMinCount(neededColor);
+        Integer maxCount = cal.getMaxCount(neededColor);
         List<String> strings = new ArrayList<>();
         int count = minCount - d.getCount();
         if (count < 0) {
             if (shouldWarn && (maxCount == null || maxCount < d.getCount())) {
-                System.out.println("Bad pixel at day " + d.getDate() + " " + d.getCount() + " " + minCount + " " + maxCount + " " + neededColor);
+                Integer maxCountNext = cal.getMaxCount(Pictures.nextColor(neededColor));
+                if (maxCountNext != null && maxCountNext < d.getCount()) {
+                    System.out.println("Very Bad pixel at day " + d.getDate() + " " + d.getCount() + " " + minCount + " " + maxCount + " " + neededColor);
+                } else {
+                    System.out.println("Bad pixel at day " + d.getDate() + " " + d.getCount() + " " + minCount + " " + maxCount + " " + neededColor);
+                }
             }
             return strings;
         }
@@ -99,10 +104,8 @@ public class Commiter {
 
     private static List<String> fillOneColor(int begin, int end, Calendar cal, Color neededColor, Templater templater) {
         List<String> strings = new ArrayList<>();
-        int minCount = cal.getMinCount(neededColor);
-        Integer maxCount = cal.getMaxCount(neededColor);
         for (int i = begin; i < end; ++i) {
-            strings.addAll(solveOneDay(minCount, maxCount, neededColor, cal.getDay(i), templater, false, null));
+            strings.addAll(solveOneDay(cal, neededColor, cal.getDay(i), templater, false, null));
         }
         return strings;
     }
@@ -112,7 +115,7 @@ public class Commiter {
     }
 
     private static List<String> postfill(int days, Calendar cal, Color neededColor, Templater templater) {
-        return fillOneColor(days, cal.size() - 1, cal, neededColor, templater);
+        return fillOneColor(days, cal.size(), cal, neededColor, templater);
     }
 
     private static String commit(LocalDateTime date, Templater templater, int count) {
