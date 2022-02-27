@@ -69,8 +69,7 @@ public class Pictures {
             case NONE -> Color.ONE;
             case ONE -> Color.TWO;
             case TWO -> Color.TREE;
-            case TREE -> Color.FOUR;
-            case FOUR -> Color.FOUR;
+            case TREE, FOUR -> Color.FOUR;
         };
     }
 

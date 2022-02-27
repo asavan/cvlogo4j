@@ -46,7 +46,7 @@ class SvgExtractorTest {
         }
     }
 
-    private void parseYear(String name) {
+    private static void parseYear(String name) {
         CalendarExtractor calendarExtractor = Runner.getCalendarExtractor(pred -> readCalendarFromFile(pred, name));
         Calendar calendar = calendarExtractor.getCalendar();
         System.out.println(calendar);

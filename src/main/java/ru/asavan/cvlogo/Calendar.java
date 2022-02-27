@@ -15,7 +15,6 @@ class Calendar {
     private final Map<Color, Integer> maxCount = new EnumMap<>(Color.class);
     private int maxCommits = 0;
     private Color fillColor = null;
-    private Integer[][] rep;
     private String repString;
 
     Calendar() {
@@ -48,7 +47,7 @@ class Calendar {
 
         int height = 7;
         int width = cal.size() / height;
-        rep = new Integer[height][width];
+        Integer[][] rep = new Integer[height][width];
         int day = 0;
         for (int w = 0; w < width; ++w) {
             for (int h = 0; h < height; ++h) {
@@ -96,7 +95,7 @@ class Calendar {
     }
 
     public String minCountPrintable() {
-        return minCount.toString() + "\n" + maxCount.toString();
+        return minCount + "\n" + maxCount;
     }
 
     Day getDayByDate(LocalDate date) {
