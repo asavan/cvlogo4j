@@ -33,8 +33,8 @@ class SvgExtractorTest {
 
     @Test
     void compareIncognitoAndNormal() {
-        Calendar calendarNormal = Runner.getCalendarExtractor(pred -> readCalendarFromFile(pred, "calendar2021_normal.txt")).getCalendar();
-        Calendar calendarIncognito = Runner.getCalendarExtractor(pred -> readCalendarFromFile(pred, "calendar2021_incognito.txt")).getCalendar();
+        Calendar calendarNormal = GitHub.getCalendarExtractor(pred -> readCalendarFromFile(pred, "calendar2021_normal.txt")).getCalendar();
+        Calendar calendarIncognito = GitHub.getCalendarExtractor(pred -> readCalendarFromFile(pred, "calendar2021_incognito.txt")).getCalendar();
         System.out.println(calendarNormal.minCountPrintable());
         System.out.println(calendarIncognito.minCountPrintable());
         assertEquals(calendarNormal.size(), calendarIncognito.size());
@@ -47,7 +47,7 @@ class SvgExtractorTest {
     }
 
     private static void parseYear(String name) {
-        CalendarExtractor calendarExtractor = Runner.getCalendarExtractor(pred -> readCalendarFromFile(pred, name));
+        CalendarExtractor calendarExtractor = GitHub.getCalendarExtractor(pred -> readCalendarFromFile(pred, name));
         Calendar calendar = calendarExtractor.getCalendar();
         System.out.println(calendar);
         System.out.println(calendar.minCountPrintable());
