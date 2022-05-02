@@ -1,4 +1,4 @@
-package ru.asavan.cvlogo;
+package ru.asavan.cvlogo.templater;
 
 /**
  * Created by asavan on 23.05.2020.

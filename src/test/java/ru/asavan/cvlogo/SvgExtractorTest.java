@@ -46,6 +46,15 @@ class SvgExtractorTest {
         }
     }
 
+    @Test
+    void calendarExtractorWithAdjustment() {
+        CalendarExtractor calendarExtractor = GitHub.getCalendarExtractor(pred -> readCalendarFromFile(pred, "calendar2021_normal.txt"));
+        calendarExtractor.adjustDay("2020-08-16");
+        Calendar calendar = calendarExtractor.getCalendar();
+        Day d = calendar.getDayByDate(Parser.getLocalDate("2020-08-16"));
+        assertEquals(18, d.getCount());
+    }
+
     private static void parseYear(String name) {
         CalendarExtractor calendarExtractor = GitHub.getCalendarExtractor(pred -> readCalendarFromFile(pred, name));
         Calendar calendar = calendarExtractor.getCalendar();

@@ -1,8 +1,8 @@
-package ru.asavan.cvlogo;
+package ru.asavan.cvlogo.templater;
 /**
  * Created by asavan on 23.05.2020.
  */
-public class LinuxTemplater implements Templater {
+class LinuxTemplater implements Templater {
     public static final String MAIN_TEMPLATE = """
             #!/usr/bin/env bash
             git init {0}

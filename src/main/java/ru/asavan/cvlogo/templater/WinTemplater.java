@@ -1,8 +1,8 @@
-package ru.asavan.cvlogo;
+package ru.asavan.cvlogo.templater;
 /**
  * Created by asavan on 23.05.2020.
  */
-public class WinTemplater implements Templater {
+class WinTemplater implements Templater {
     public static final String MAIN_TEMPLATE = """
             git init {0}
             cd {0}

@@ -1,5 +1,8 @@
 package ru.asavan.cvlogo;
 
+import ru.asavan.cvlogo.templater.Templater;
+import ru.asavan.cvlogo.templater.TemplaterFactory;
+
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,19 +19,12 @@ public class Commiter {
     private static final boolean DEBUG_PRINTING = false;
 
     public static String fake_it(Integer[][] image, Calendar cal, String username, String repo, int offset, OsName osName, boolean isNew, LocalDate githubErrorSince) {
-        Templater templater = chooseTemplater(osName);
+        Templater templater = TemplaterFactory.chooseTemplater(osName);
         List<String> strings = generateValuesInDateOrder(image, cal, offset, templater, githubErrorSince);
         if (strings.isEmpty()) {
             return "";
         }
         return MessageFormat.format(templater.getMainTemplate(isNew), repo, String.join("\n", strings), GIT_URL, username);
-    }
-
-    private static Templater chooseTemplater(OsName osName) {
-        if (osName == OsName.WIN) {
-            return new WinTemplater();
-        }
-        return new LinuxTemplater();
     }
 
     private static List<String> generateValuesInDateOrder(Integer[][] image, Calendar cal, int offset, Templater templater, LocalDate githubErrorSince) {

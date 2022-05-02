@@ -2,8 +2,6 @@ package ru.asavan.cvlogo;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 /**
  * Created by asavan on 21.05.2020.
@@ -62,13 +60,7 @@ public class Runner {
     }
 
     private static Calendar getCalendar() {
-        return getCalendarExtractorWithAdjustment(pred ->
+        return GitHub.getCalendarExtractor(pred ->
                 GitHub.retrieveContributionsCalendar(pred, USERNAME, DEBUG_PRINTING)).getCalendar();
-    }
-
-    static CalendarExtractor getCalendarExtractorWithAdjustment(Consumer<Predicate<String>> consumer) {
-        CalendarExtractor calendarExtractor = GitHub.getCalendarExtractor(consumer);
-        calendarExtractor.adjustDay("2020-08-16");
-        return calendarExtractor;
     }
 }

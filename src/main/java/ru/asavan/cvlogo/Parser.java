@@ -17,12 +17,16 @@ public class Parser {
         return Integer.parseInt(count);
     }
 
-    public static Day parseOneLine(String line, ColorExtractor colorExtractor) {
-        String fill = getValue(line, "data-level");
-        if (fill == null) {
+    private static Color getColor(String c) {
+        return Color.values()[c.charAt(0) - '0'];
+    }
+
+    public static Day parseOneLine(String line) {
+        String dataLevel = getValue(line, "data-level");
+        if (dataLevel == null) {
             return null;
         }
-        Color color = colorExtractor.getColor(fill);
+        Color color = getColor(dataLevel);
         int count = getCount(getValue(line, "data-count"));
         String dataStr = getValue(line, "data-date");
         LocalDate date = getLocalDate(dataStr);

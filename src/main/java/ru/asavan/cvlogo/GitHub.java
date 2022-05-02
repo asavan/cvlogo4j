@@ -24,12 +24,9 @@ public class GitHub {
     }
 
     public static CalendarExtractor getCalendarExtractor(Consumer<Predicate<String>> consumer) {
-        MemoryCollector memoryCollector = new MemoryCollector();
-        SvgExtractor svgExtractor = new SvgExtractor(memoryCollector);
-        ColorExtractor colorExtractor = new ColorExtractor();
+        CalendarExtractor calendarExtractor = new CalendarExtractor();
+        SvgExtractor svgExtractor = new SvgExtractor(calendarExtractor);
         consumer.accept(svgExtractor);
-        CalendarExtractor calendarExtractor = new CalendarExtractor(colorExtractor);
-        calendarExtractor.extract(memoryCollector.getArr());
         return calendarExtractor;
     }
 

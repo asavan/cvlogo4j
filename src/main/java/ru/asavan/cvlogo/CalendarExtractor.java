@@ -1,28 +1,16 @@
 package ru.asavan.cvlogo;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
  * Created by asavan on 23.05.2020.
  */
 public class CalendarExtractor implements Consumer<String> {
-    private final ColorExtractor colorExtractor;
     private final Calendar cal = new Calendar();
-
-    public CalendarExtractor(ColorExtractor colorExtractor) {
-        this.colorExtractor = colorExtractor;
-    }
-
-    public void extract(List<String> lines) {
-        for (String line : lines) {
-            accept(line);
-        }
-    }
 
     @Override
     public void accept(String inputLine) {
-        Day d = Parser.parseOneLine(inputLine, colorExtractor);
+        Day d = Parser.parseOneLine(inputLine);
         if (d != null) {
             cal.add(d);
         }
