@@ -16,7 +16,7 @@ import java.util.List;
 public class Commiter {
     public static final String GIT_URL = "git@github.com";
     private static final int DAYS_IN_WEEK = 7;
-    private static final boolean DEBUG_PRINTING = true;
+    private static final boolean DEBUG_PRINTING = false;
 
     public static String fake_it(Integer[][] image, Calendar cal, String username, String repo, int offset, OsName osName, boolean isNew, LocalDate githubErrorSince) {
         Templater templater = TemplaterFactory.chooseTemplater(osName);

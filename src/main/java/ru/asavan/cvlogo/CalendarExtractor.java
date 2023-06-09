@@ -1,19 +1,20 @@
 package ru.asavan.cvlogo;
 
-import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Created by asavan on 23.05.2020.
  */
-public class CalendarExtractor implements Consumer<String> {
+public class CalendarExtractor implements Predicate<String> {
     private final Calendar cal = new Calendar();
 
     @Override
-    public void accept(String inputLine) {
+    public boolean test(String inputLine) {
         Day d = Parser.parseOneLine(inputLine);
         if (d != null) {
             cal.add(d);
         }
+        return false;
     }
 
     public Calendar getCalendar() {

@@ -1,6 +1,5 @@
 package ru.asavan.cvlogo;
 
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -8,24 +7,25 @@ import java.util.function.Predicate;
  */
 public class SvgExtractor implements Predicate<String> {
     private boolean needCollect = false;
-    private final Consumer<String> consumer;
+    private final Predicate<String> predicate;
 
-    public SvgExtractor(Consumer<String> consumer) {
-        this.consumer = consumer;
+    public SvgExtractor(Predicate<String> predicate) {
+        this.predicate = predicate;
     }
 
     @Override
     public boolean test(String inputLine) {
+        boolean res = false;
         if (inputLine.contains("<svg")) {
             needCollect = true;
         }
         if (needCollect) {
-            consumer.accept(inputLine);
+            res = predicate.test(inputLine);
         }
         if (inputLine.contains("</svg>")) {
             needCollect = false;
             return true;
         }
-        return false;
+        return res;
     }
 }

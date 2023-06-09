@@ -31,12 +31,14 @@ class Calendar {
         int max = 0;
         for (Day day : cal) {
             max = Math.max(max, day.getCount());
-            if (day.getColor() == null) {
+            if (day.getColor() == null || day.getColor() == Color.NONE) {
                 continue;
             }
-            Integer min = minCount.get(day.getColor());
-            if (min == null || min > day.getCount()) {
-                minCount.put(day.getColor(), day.getCount());
+            if (day.getColor() != Color.ONE) {
+                Integer min = minCount.get(day.getColor());
+                if (min == null || min > day.getCount()) {
+                    minCount.put(day.getColor(), day.getCount());
+                }
             }
             Integer maxColor = maxCount.get(day.getColor());
             if (maxColor == null || maxColor < day.getCount()) {
