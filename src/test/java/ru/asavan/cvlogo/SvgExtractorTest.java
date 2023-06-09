@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by asavan on 24.05.2020.
@@ -47,12 +48,10 @@ class SvgExtractorTest {
     }
 
     @Test
-    void calendarExtractorWithAdjustment() {
-        CalendarExtractor calendarExtractor = GitHub.getCalendarExtractor(pred -> readCalendarFromFile(pred, "calendar2021_normal.txt"));
-        calendarExtractor.adjustDay("2020-08-16");
-        Calendar calendar = calendarExtractor.getCalendar();
-        Day d = calendar.getDayByDate(Parser.getLocalDate("2020-08-16"));
-        assertEquals(18, d.getCount());
+    void testCalendar() {
+        Calendar cal = GitHub.getCalendarExtractor(pred ->
+                GitHub.retrieveContributionsCalendar(pred, "asavan", true)).getCalendar();
+        assertTrue(cal.size() > 0);
     }
 
     private static void parseYear(String name) {

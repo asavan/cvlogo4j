@@ -16,13 +16,13 @@ public class SvgExtractor implements Predicate<String> {
 
     @Override
     public boolean test(String inputLine) {
-        if (inputLine.startsWith("<svg")) {
+        if (inputLine.contains("<svg")) {
             needCollect = true;
         }
         if (needCollect) {
             consumer.accept(inputLine);
         }
-        if (inputLine.endsWith("</svg>")) {
+        if (inputLine.contains("</svg>")) {
             needCollect = false;
             return true;
         }

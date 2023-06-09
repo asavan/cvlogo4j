@@ -17,7 +17,7 @@ public class Runner {
     }
 
     public static void asavanPic(boolean isNew) throws IOException {
-        draw(isNew, Pictures.strToSprite(Pictures.ASAVAN3), 12, Color.ONE, 0);
+        draw(isNew, Pictures.strToSprite(Pictures.ASAVAN3), 12, Color.ONE, 6);
     }
 
     public static void dot() throws IOException {

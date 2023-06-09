@@ -13,8 +13,15 @@ public class Parser {
         return LocalDate.parse(date, FORMATTER);
     }
 
-    private static int getCount(String count) {
-        return Integer.parseInt(count);
+    private static int getCount(String line) {
+        int begin = line.indexOf('>');
+        int end = line.indexOf(" contribution");
+        if (begin < 0 || end < 0) return 0;
+        String data = line.substring(begin + 1, end);
+        if ("No".equals(data)) {
+            return 0;
+        }
+        return Integer.parseInt(data);
     }
 
     private static Color getColor(String c) {
@@ -27,7 +34,7 @@ public class Parser {
             return null;
         }
         Color color = getColor(dataLevel);
-        int count = getCount(getValue(line, "data-count"));
+        int count = getCount(line);
         String dataStr = getValue(line, "data-date");
         LocalDate date = getLocalDate(dataStr);
         return new Day(color, count, date);
