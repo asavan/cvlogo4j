@@ -10,7 +10,7 @@ public class Runner {
     private static final String USERNAME = "asavan";
     private static final String REPO_TO_DRAW = "cvlogo";
     private static final boolean DEBUG_PRINTING = true;
-    private static final LocalDate GITHUB_ERROR_SINCE = Parser.getLocalDate("2020-07-04"); // or null to switch off
+    private static final LocalDate GITHUB_ERROR_SINCE = null;
 
     public static void main(String[] args) throws IOException {
         asavanPic(true);

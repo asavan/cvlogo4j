@@ -25,7 +25,7 @@ public class GitHub {
 
     public static CalendarExtractor getCalendarExtractor(Consumer<Predicate<String>> consumer) {
         CalendarExtractor calendarExtractor = new CalendarExtractor();
-        consumer.accept(new SvgExtractor(calendarExtractor));
+        consumer.accept(calendarExtractor);
         return calendarExtractor;
     }
 

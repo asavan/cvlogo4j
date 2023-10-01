@@ -2,6 +2,7 @@ package ru.asavan.cvlogo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ class Calendar {
     void precalc() {
         minCount.put(Color.NONE, 0);
         minCount.put(Color.ONE, 1);
+        cal.sort(Comparator.comparing(Day::getDate));
         int max = 0;
         for (Day day : cal) {
             max = Math.max(max, day.getCount());

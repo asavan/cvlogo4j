@@ -14,10 +14,11 @@ public class Parser {
     }
 
     private static int getCount(String line) {
-        int begin = line.indexOf('>');
+        String toFind = "<span class=\"sr-only\">";
+        int begin = line.indexOf(toFind) + toFind.length();
         int end = line.indexOf(" contribution");
         if (begin < 0 || end < 0) return 0;
-        String data = line.substring(begin + 1, end);
+        String data = line.substring(begin, end);
         if ("No".equals(data)) {
             return 0;
         }
@@ -30,12 +31,15 @@ public class Parser {
 
     public static Day parseOneLine(String line) {
         String dataLevel = getValue(line, "data-level");
-        if (dataLevel == null) {
+        if (dataLevel == null || dataLevel.isEmpty()) {
+            return null;
+        }
+        String dataStr = getValue(line, "data-date");
+        if (dataStr == null || dataStr.isEmpty()) {
             return null;
         }
         Color color = getColor(dataLevel);
         int count = getCount(line);
-        String dataStr = getValue(line, "data-date");
         LocalDate date = getLocalDate(dataStr);
         return new Day(color, count, date);
     }
