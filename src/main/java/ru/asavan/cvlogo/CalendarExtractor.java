@@ -7,12 +7,20 @@ import java.util.function.Predicate;
  */
 public class CalendarExtractor implements Predicate<String> {
     private final Calendar cal = new Calendar();
+    private Day dTemp = null;
 
     @Override
     public boolean test(String inputLine) {
+        if (dTemp != null) {
+            int count = Parser.parseNextLine(inputLine);
+            Day toStore = new Day(dTemp.getColor(), count, dTemp.getDate());
+            cal.add(toStore);
+            dTemp = null;
+        }
         Day d = Parser.parseOneLine(inputLine);
         if (d != null) {
-            cal.add(d);
+            dTemp = d;
+            // cal.add(d);
         }
         return false;
     }

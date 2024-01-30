@@ -14,7 +14,7 @@ public class Parser {
     }
 
     private static int getCount(String line) {
-        String toFind = "<span class=\"sr-only\">";
+        String toFind = "class=\"sr-only position-absolute\">";
         int begin = line.indexOf(toFind) + toFind.length();
         int end = line.indexOf(" contribution");
         if (begin < 0 || end < 0) return 0;
@@ -27,6 +27,10 @@ public class Parser {
 
     private static Color getColor(String c) {
         return Color.values()[c.charAt(0) - '0'];
+    }
+
+    public static int parseNextLine(String line) {
+        return getCount(line);
     }
 
     public static Day parseOneLine(String line) {
